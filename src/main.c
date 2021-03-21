@@ -5,5 +5,7 @@
 int main() {
     test();
 
+    printf("aaaaaaaaa\n");
+
     return 0;
 }
