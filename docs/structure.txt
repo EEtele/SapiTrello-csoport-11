@@ -18,11 +18,11 @@ typedef struct {
 typedef struct {
 	int cardID;	// generate using static method(?)
 	// We could use: 
-	//		- total number of cards
+	//	- total number of cards
 	//      - total number of cards in current board
-	// 			(cons: instance-wide multiple cards with same ID)
-	//		- rand()
-	//			(note: will have to verify availability of generated ID)
+	// 		(cons: instance-wide multiple cards with same ID)
+	//	- rand()
+	//		(note: will have to verify availability of generated ID)
 	
 	char* title;
 	char* description;
