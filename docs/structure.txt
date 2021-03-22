@@ -1,0 +1,95 @@
+// In this file we write a tl;dr (too long; didn't read) of all structs
+// and functions we will have to implement
+// Eventually we will sort these into their own header files
+
+MAX_TITLE_LENGTH 30 // name=title
+MAX_CARD_DESCRIPTION_LENGTH 250
+MAX_USER_NAME_LENGTH 25
+
+enum Status {
+	TODO, WORKING, DONE;
+}
+
+typedef struct {
+	int userID;	// generate using static method(?)
+	char* name;
+} User;
+
+typedef struct {
+	int cardID;	// generate using static method(?)
+	// We could use: 
+	//		- total number of cards
+	//      - total number of cards in current board
+	// 			(cons: instance-wide multiple cards with same ID)
+	//		- rand()
+	//			(note: will have to verify availability of generated ID)
+	
+	char* title;
+	char* description;
+	int(?) timestamp;	// Date when card was created
+	Status status;
+	int user;	// Assigned user(ID); board must contain this user
+	int* userLog;	// Store all userIDs who worked on this card
+} Card;
+
+typedef struct {
+	char* name;
+	
+	int numberOfCards;
+	Card* cards;
+	int numberOfUsers;
+	int* users;	// userIDs
+} Board;
+
+struct {
+	Board* selectedBoard;	// Pointer to currently selected board, null by default
+
+	int numberOfBoards;
+	Board* boards;
+	int numberOfUsers;
+	User* users;
+} Instance instance;
+//	We will only have one instance per process
+
+
+instanceLoad()
+	Loads all boards into memory
+instanceWrite()
+	Writes all boards to disk
+
+userCreate(userName)
+userDelete(userID)
+	Delete user from all boards and cards (except from history)
+
+boardCreate(boardName)
+	Each board should have a list of cards sorted by (status>date)
+boardModify(boardName)
+boardRemove(boardName)
+boardList()
+	List all boards
+boardSelect(boardName)
+	Select board
+boardAddUser(boardName, userID)
+	Add user to board
+boardRemoveUser(boardName, userID)
+	Remove user from board and all of its cards
+	
+boardSelect(boardName)
+
+//	To create a card, first you must select a board
+cardCreate(cardName, cardDescription)
+	Description is "" by default
+cardModify(cardID)
+cardRemove(cardID)
+cardAssignUser(cardID, userID)
+cardRemoveUser(cardID, userID)
+
+cardGetStatus(cardID)
+cardUpdate(cardID)
+	if card.status != DONE
+		if card.status == TODO
+			card.status = WORKING
+		else if card.status == WORKING
+			card.status = DONE
+cardSetStatus(cardID, status)
+cardGetUserLog(cardID)
