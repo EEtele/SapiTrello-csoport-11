@@ -13,6 +13,7 @@ enum Status {
 typedef struct {
 	int userID;	// generate using static method(?)
 	char* name;
+	char* email;
 } User;
 
 typedef struct {
@@ -57,7 +58,7 @@ instanceLoad()
 instanceWrite()
 	Writes all boards to disk
 
-userCreate(userName)
+userCreate(userName, userEmail)
 userDelete(userID)
 	Delete user from all boards and cards (except from history)
 
