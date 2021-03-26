@@ -9,9 +9,9 @@ lehet.
 	
 ### User
 * Create new user
-	` user new {userName} {userEmail}`
+	` user new {userName} {userEmail}`  
 * Delete user
-	` user delete {userID}`
+	` user delete {userID}`  
 
 ### Board  
 * Create new board  
