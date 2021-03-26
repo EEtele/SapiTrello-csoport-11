@@ -6,6 +6,12 @@ lehet.
 ### Instance (Commands that can be used from anywhere)  
 * Use keyboard combinations instead of commands  
 	` ezMode`  
+	
+### User
+* Create new user
+	` user new {userName} {userEmail}`
+* Delete user
+	` user delete {userID}`
 
 ### Board  
 * Create new board  
