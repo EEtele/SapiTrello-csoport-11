@@ -8,9 +8,9 @@ lehet.
 	` ezMode`  
 	
 ### User
-* Create new user
+* Create new user  
 	` user new {userName} {userEmail}`  
-* Delete user
+* Delete user  
 	` user delete {userID}`  
 
 ### Board  
