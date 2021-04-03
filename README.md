@@ -4,7 +4,7 @@ lehet.
 
 ## Commands
 ### Instance (Commands that can be used from anywhere)  
-* Use keyboard combinations instead of commands  
+* Use keyboard combinations and arrows instead of commands  
 	` ezMode`  
 	
 ### User
