@@ -51,7 +51,7 @@ typedef struct {
 	char* name;
 	
 	int numberOfCards;
-	Card* cards;
+	Card* cards;	//	linked list
 	int numberOfUsers;
 	char** users;	// 	array of users assigned to this board (only stores emails)
 } Board;
