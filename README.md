@@ -11,7 +11,7 @@ lehet.
 * Create new user  
 	` user new {userName} {userEmail}`  
 * Delete user  
-	` user delete {userID}`  
+	` user delete {userEmail}`  
 
 ### Board  
 * Create new board  
@@ -25,9 +25,9 @@ lehet.
 * Select board to work in  
 	` board select {boardName}`  
 * Add user to board to selected board  
-	` board user add {userID}`  
+	` board user add {userEmail}`  
 * Remove user from selected board  
-	` board user remove {userID}`  
+	` board user remove {userEmail}`  
 
 ### Card  
 * Create new card  
@@ -39,9 +39,9 @@ lehet.
 * List all cards  
 	` card list`  
 * Assign user to card  
-	` card user assign {cardID} {userID}`  
+	` card user assign {cardID} {userEmail}`  
 * Remove user from card  
-	` card user remove {cardID} {userID}`  
+	` card user remove {cardID} {userEmail}`  
 * Return card status  
 	` card status {cardID}`  
 * Update card status  
