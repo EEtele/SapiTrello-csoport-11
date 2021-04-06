@@ -27,7 +27,7 @@ typedef struct {
 	time_t timestamp;	//	Date when card was created
 	Status status;
 	char* user;	// Assigned user (store email); board must contain this user
-	int* userLog;	// Store emails of all users who worked on this card
+	char** userLog;	// Store emails of all users who worked on this card
 } Card;
 
 /* time_t usage example:
