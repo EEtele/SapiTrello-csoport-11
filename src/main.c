@@ -1,11 +1,7 @@
-#include <stdio.h>
-
-#include "../include/example.h"
+#include "../include/instance.h"
+#include "../include/terminal.h"
 
 int main() {
-    test();
-
-    printf("aaaaaaaaa\n");
 
     return 0;
 }
