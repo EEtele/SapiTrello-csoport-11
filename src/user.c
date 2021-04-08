@@ -19,7 +19,7 @@ void userDelete(char* userEmail) {
 
     for (int i = 0; i < instance.numberOfUsers; i++) {
         if (strcmp(instance.users[i].email, userEmail) == 0) {
-            User* temp = instance.users[i];
+            User* temp = &instance.users[i];
 
             for (int j = i; j < instance.numberOfUsers-1; j++) {
                 instance.users[i] = instance.users[i+1];
