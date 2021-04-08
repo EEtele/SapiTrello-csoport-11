@@ -5,7 +5,7 @@
 #include "card.h"
 
 typedef struct {
-    char* name;
+    char name[MAX_BOARD_NAME_LENGTH];
 
     int numberOfCards;
     Card* cards;    // Linked list
