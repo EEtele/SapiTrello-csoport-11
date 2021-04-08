@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include "../include/card.h"
 #include "../include/example.h"
 
 int main() {
