@@ -77,24 +77,36 @@ userCreate(userName, userEmail)
 userDelete(userEmail)
 	Delete user from all boards and cards (except from history)
 
+////////
+board functions
+///
+
 boardCreate(boardName)
 	Each board should have a list of cards sorted by (status>date)
 boardModify(boardName) //NEW BOARD NAME
-boardDelete(boardName)
+boardDelete(boardName)//search position in array, free board, push ones after back, realloc -1
 boardList()
 	List all boards
 boardSelect(boardName)
 	Select board
-boardAddUser(boardName, userEmail)
-	Add user to board
-boardContainsUser(boardName, userEmail)
+	
+boardContainsUser(userEmail) 
 	return true(1) if board contains user
-boardRemoveUser(boardName, userEmail)
+	
+boardAddUser(userEmail)//USE SELECTED BOARD AGAIN
+	Add user to board
+
+boardRemoveUser(userEmail)//USE SELECTED BOARD AGAIN
 	Remove user from board and all of its cards
 	
-boardSelect(boardName)
-
+	
+	
 // 	NOTE: To create/modify/delete a card, first you must select a board
+
+////////
+card functions
+///
+
 cardCreate(cardName, cardDescription)
 	Description is "" by default
 cardModify(cardID)
