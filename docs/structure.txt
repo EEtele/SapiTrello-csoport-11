@@ -79,7 +79,7 @@ userDelete(userEmail)
 
 boardCreate(boardName)
 	Each board should have a list of cards sorted by (status>date)
-boardModify(boardName)
+boardModify(boardName) //NEW BOARD NAME
 boardDelete(boardName)
 boardList()
 	List all boards
