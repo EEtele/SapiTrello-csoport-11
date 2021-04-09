@@ -26,7 +26,7 @@ typedef struct {
 	char* description;
 	time_t timestamp;	//	Date when card was created
 	Status status;
-	char* user;	// Assigned user (store email); board must contain this user
+	char* user;	// Assigned user (store email); Board must contain this user
 	char** userLog;	// Store emails of all users who worked on this card
 } Card;
 
@@ -53,12 +53,12 @@ typedef struct {
 	int numberOfCards;
 	Card* cards;	//	linked list
 	int numberOfUsers;
-	char** users;	// 	array of users assigned to this board (only stores emails)
+	char** users;	// 	array of users assigned to this Board (only stores emails)
 } Board;
 
 struct {
-	Board* selectedBoard;	// 	Pointer to currently selected board, null by default
-	//	(NOTE: when deleting currently selected board, this should be set to null)
+	Board* selectedBoard;	// 	Pointer to currently selected Board, null by default
+	//	(NOTE: when deleting currently selected Board, this should be set to null)
 
 	int numberOfBoards;
 	Board* boards;
@@ -78,23 +78,23 @@ userDelete(userEmail)
 	Delete user from all boards and cards (except from history)
 
 boardCreate(boardName)
-	Each board should have a list of cards sorted by (status>date)
+	Each Board should have a list of cards sorted by (status>date)
 boardModify(boardName)
 boardDelete(boardName)
 boardList()
 	List all boards
 boardSelect(boardName)
-	Select board
+	Select Board
 boardAddUser(boardName, userEmail)
-	Add user to board
+	Add user to Board
 boardContainsUser(boardName, userEmail)
-	return true(1) if board contains user
+	return true(1) if Board contains user
 boardRemoveUser(boardName, userEmail)
-	Remove user from board and all of its cards
+	Remove user from Board and all of its cards
 	
 boardSelect(boardName)
 
-// 	NOTE: To create/modify/delete a card, first you must select a board
+// 	NOTE: To create/modify/delete a card, first you must select a Board
 cardCreate(cardName, cardDescription)
 	Description is "" by default
 cardModify(cardID)

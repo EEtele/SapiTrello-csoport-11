@@ -12,7 +12,7 @@
 #include "defines.h"
 
 struct Instance {
-    Board* selectedBoard;   // Pointer to currently selected board, null by default
+    Board* selectedBoard;   // Pointer to currently selected Board, null by default
 
     int numberOfBoards;
     Board* boards;

@@ -14,20 +14,20 @@ lehet.
 	` user delete {userEmail}`  
 
 ### Board  
-* Create new board  
-	` board new {boardName}`  
-* Modify board  
-	` board modify {boardName}`  
-* Remove board  
-	` board remove {boardName}`  
+* Create new Board  
+	` Board new {boardName}`  
+* Modify Board  
+	` Board modify {boardName}`  
+* Remove Board  
+	` Board remove {boardName}`  
 * List all boards  
-	` board list`  
-* Select board to work in  
-	` board select {boardName}`  
-* Add user to board to selected board  
-	` board user add {userEmail}`  
-* Remove user from selected board  
-	` board user remove {userEmail}`  
+	` Board list`  
+* Select Board to work in  
+	` Board select {boardName}`  
+* Add user to Board to selected Board  
+	` Board user add {userEmail}`  
+* Remove user from selected Board  
+	` Board user remove {userEmail}`  
 
 ### Card  
 * Create new card  

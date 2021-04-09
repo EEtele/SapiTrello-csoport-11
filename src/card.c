@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-Card cardCreate(char * cardName, char * cardDescription, char * user)
+void cardCreate(char * cardName, char * cardDescription/*, char * user*/)
 {
     /*
     int cardID;	// generate using rand()
@@ -14,22 +14,41 @@ Card cardCreate(char * cardName, char * cardDescription, char * user)
     char* description;
 //    time_t timestamp;	//	Date when card was created
     enum Status status;
-    char* user;	// Assigned user (store email); board must contain this user
+    char* user;	// Assigned user (store email); Board must contain this user
     char** userLog;	// Store emails of all users who worked on t */
 
-    Card card;
+    Card *card;
     srand(time(0));
-    card.cardID = rand()%1000;
-    card.title=(char *)calloc(strlen(cardName)+1, sizeof(char));
-    card.description=(char *)calloc(strlen(cardDescription)+1, sizeof(char));
-    strcpy(card.title, cardName);
-    strcpy(card.description, cardDescription);
-    card.status=TODO;
-    card.user=(char *)calloc(strlen(user)+1, sizeof(char));
-    strcpy(card.user, user);
-    card.userLogCounter=0;
-    return card;
+    card->cardID = rand()%1000;
+    card->title=(char *)calloc(strlen(cardName)+1, sizeof(char));
+    card->description=(char *)calloc(strlen(cardDescription)+1, sizeof(char));
+    strcpy(card->title, cardName);
+    strcpy(card->description, cardDescription);
+    card->status=TODO;
+    card->user=NULL;
+    card->userLogCounter=0;
+
+    cardNode* temp=(cardNode*)malloc(sizeof(cardNode));
+    (*temp).card=card;
+    (*temp).next=NULL;
+
+    if(instance.selectedBoard->baseNode=NULL)
+    {
+
+        instance.selectedBoard->baseNode=temp;
+    }
+    else {
+        cardNode *currNode;
+        currNode = instance.selectedBoard->baseNode;
+        while (currNode->next != NULL) {
+            currNode = currNode->next;
+        }
+        currNode->next=temp;
+
+    }
 }
+
+
 
 void cardDelete(Card * card)
 {

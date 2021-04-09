@@ -1,7 +1,7 @@
 #include "../include/instance.h"
 
 //Cannot complete instanceLoad without writing instanceWrite
-//And cannot write instanceWrite without card and board functions
+//And cannot write instanceWrite without card and Board functions
 
 void initializeDataFiles() {
     FILE* fout = fopen("data/boards.dat", "wt");
@@ -86,7 +86,7 @@ int instanceWrite() {
 
         char filePath[MAX_BOARD_NAME_LENGTH+15] = "../";
         strcat(filePath, dirPath);
-        strcat(filePath, "/board.dat");
+        strcat(filePath, "/Board.dat");
 
         FILE* boardFout = fopen(filePath, "wt");
         //filePath looks fine, but fopen cannot open it :L

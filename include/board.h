@@ -3,12 +3,13 @@
 
 #include "defines.h"
 #include "card.h"
+#include "user.h"
+
 
 typedef struct {
     char name[MAX_BOARD_NAME_LENGTH];
-
+    cardNode *baseNode;
     int numberOfCards;
-    Card* cards;    // Linked list
     int numberOfUsers;
     char** users;
 } Board;
