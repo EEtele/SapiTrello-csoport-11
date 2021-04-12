@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-void cardCreate(char * cardName, char * cardDescription/*, char * user*/)
+void cardCreate(char * cardName, char * cardDescription)
 {
     /*
     int cardID;	// generate using rand()
@@ -48,34 +48,120 @@ void cardCreate(char * cardName, char * cardDescription/*, char * user*/)
     }
 }
 
-
-
-void cardDelete(Card * card)
+void cardDelete(int CardId)
 {
-    free(card);
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    cardNode  *temp;
+
+    if (currNode->card.cardId == CardId){ //ha az elso a kitorlendo elem
+        temp = currNode;
+        instance.selectedBoard->baseNode=currNode;
+        free(temp);
+    }
+
+    else {  //a kitorlendo elem a kozepen vagy a vegen van
+        while (currNode->next != NULL) {
+            temp=currNode->next;
+            if(temp->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
+                currNode->next = temp->next;
+                free(temp); break;
+            }
+            else {
+                currNode = currNode->next;
+            }
+        }
+    }
 }
 
-char * cardAssignUser(Card * card)
-{
-    return card->user;
+void cardAssignUser(int CardId, char * userEmail){
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    while (currNode->next != NULL) {
+        if(currNode->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
+            currNode->card.user=(char *)calloc(strlen(userEmail)+1, sizeof (char));
+            strcpy(currNode->card.user, userEmail);
+            break;
+        }
+        currNode = currNode->next;
+    }
 }
 
-void cardModifyUser(Card * card, char * user)
-{
-    card->userLogCounter++;
-    void *pointer;
-    pointer = realloc(card->userLog, card->userLogCounter * sizeof(char *));
-    card->userLog = pointer;
-    card->user=(char *)calloc( strlen(user), sizeof(char));
-    card->user=user;
+void cardRemoveUser(int CardId, char *userEmail){
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    while (currNode->next != NULL) {
+        if(currNode->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
+            free(currNode->card.user);
+            break;
+        }
+        currNode = currNode->next;
+    }
 }
 
-enum Status cardGetStatus(Card * card)
-{
-    return card->status;
+//void cardModifyUser(Card * card, char * user)
+//{
+//    card->userLogCounter++;
+//    void *pointer;
+//    pointer = realloc(card->userLog, card->userLogCounter * sizeof(char *));
+//    card->userLog = pointer;
+//    card->user=(char *)calloc( strlen(user), sizeof(char));
+//    card->user=user;
+//}
+
+void cardGetStatus(int CardId) {
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    while (currNode->next != NULL) {
+        if(currNode->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
+            printf("\n%s", currNode->card.status);
+            break;
+        }
+        currNode = currNode->next;
+    }
 }
 
-void cardSetStatus(Card * card, enum Status status)
-{
-    card->status=status;
+void cardSetStatus(int CardId, enum Status status) {
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    while (currNode->next != NULL) {
+        if(currNode->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
+            currNode->card.status = status;
+            break;
+        }
+        currNode = currNode->next;
+    }
 }
+
+void cardUpdate(int cardID) {
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    while (currNode->next != NULL) {
+        if(currNode->card.cardId == cardID) { //akkor lepik be ha megtalaltuk az elemet
+            if (currNode->card.status != DONE) {
+                if (currNode->card.status == TODO) {
+                    currNode->card.status = WORKING;
+                }
+                    else if (currNode->card.status == WORKING) {
+                    currNode->card.status = DONE;
+                    }
+                }
+            }
+                break;
+        }
+        currNode = currNode->next;
+    }
+
+void cardGetUserLog(int CardId){
+    cardNode *currNode;
+    currNode = instance.selectedBoard->baseNode;
+    while (currNode->next != NULL) {
+        if(currNode->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
+           //kiiratas;
+            break;
+        }
+        currNode = currNode->next;
+    }
+}
+
+

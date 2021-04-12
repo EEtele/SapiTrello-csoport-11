@@ -27,13 +27,13 @@ typedef struct Card {
 } Card;
 
 void cardCreate(char * cardName, char * cardDescription);
-void cardModifyUser(Card * card, char * user);
-void cardDelete(Card * card);
-char * cardAssignUser(Card * card);
-//void cardRemoveUser(int cardID, char *userEmail);
-enum Status cardGetStatus(Card * card);
-//cardUpdate(int cardID);
-void cardSetStatus(Card * card, enum Status status);
-char ** cardGetUserLog(Card * card);
+//void cardModifyUser(Card * card, char * user);
+void cardDelete( int CardId);
+void cardAssignUser(int CardId, char * userEmail);
+void cardRemoveUser(int CardId, char *userEmail);
+void cardUpdate(int cardID);
+void cardSetStatus(int CardId, enum Status status);
+void cardGetStatus(int CardId);
+void cardGetUserLog(int CardId);
 
 #endif //SAPITRELLO_CSOPORT_11_CARD_H
