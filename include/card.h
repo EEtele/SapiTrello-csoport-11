@@ -12,11 +12,6 @@ enum Status {
     TODO, WORKING, DONE
 };
 
-typedef struct cardNode{
-    Card *card;
-    struct cardNode* next;
-}cardNode;
-
 typedef struct Card {
     int cardID;
 
@@ -29,6 +24,11 @@ typedef struct Card {
     int numberOfUserLog; //hany email van a userLogban
 
 } Card;
+
+typedef struct cardNode{
+    Card *card;
+    struct cardNode* next;
+}cardNode;
 
 void cardCreate(char * cardName, char * cardDescription);
 void cardDelete( int CardId);

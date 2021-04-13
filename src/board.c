@@ -6,7 +6,7 @@ void boardCreate(char* boardName)
     strcpy((*tempB).name, boardName);
     if (instance.boards == NULL) {
         instance.boards = (Board*)calloc(1, sizeof(Board));
-        instance.boards[0] = tempB;
+        instance.boards[0] = *tempB;
         instance.numberOfBoards=1;
 
     } else {
@@ -14,7 +14,7 @@ void boardCreate(char* boardName)
         int n = instance.numberOfBoards;
         Board* newPtr = (Board*)realloc(ptr, (n+1)*sizeof(Board));
         instance.boards = newPtr;
-        instance.boards[n] = tempB;
+        instance.boards[n] = *tempB;
         instance.numberOfBoards++;
     }
 }

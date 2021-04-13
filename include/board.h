@@ -9,9 +9,9 @@
 #include "user.h"
 
 
-typedef struct {
+typedef struct Board {
     char name[MAX_BOARD_NAME_LENGTH];
-    cardNode *baseNode;
+    struct cardNode *baseNode;
     int numberOfCards;
     int numberOfUsers;
     char** users;
