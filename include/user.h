@@ -11,4 +11,8 @@ typedef struct User {
     char email[MAX_USER_EMAIL_LENGTH];
 } User;
 
+void userCreate(char* userName, char* userEmail);
+void userDelete(char* userEmail);
+void userPrint();
+
 #endif //SAPITRELLO_CSOPORT_11_USER_H
