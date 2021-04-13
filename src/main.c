@@ -5,6 +5,7 @@ int main() {
     //instanceLoad();
 
     // Terminal loop
+    terminalLoop();
 
     //instanceWrite();
     return 0;

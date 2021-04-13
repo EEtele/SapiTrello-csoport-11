@@ -22,7 +22,6 @@ struct Instance {
 // Only one instance per process
 
 int instanceLoad();
-
 int instanceWrite();
 
 #endif //SAPITRELLO_CSOPORT_11_INSTANCE_H
