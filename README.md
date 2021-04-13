@@ -6,12 +6,21 @@ lehet.
 ### Instance (Commands that can be used from anywhere)  
 * Use keyboard combinations and arrows instead of commands  
 	` ezMode`  
+* Exit terminal in safe mode  
+	` exit`  
 	
+#### Usage
+* Always put parameters in "" quotes, example:  
+	` user new "username" "user@example.com"`  
+* Also, please don't use " as quote in description  
+
 ### User
 * Create new user  
 	` user new {userName} {userEmail}`  
 * Delete user  
 	` user delete {userEmail}`  
+* List users  
+	` user list`  
 
 ### Board  
 * Create new Board  
