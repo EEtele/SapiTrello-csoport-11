@@ -1,33 +1,36 @@
 #ifndef SAPITRELLO_CSOPORT_11_CARD_H
 #define SAPITRELLO_CSOPORT_11_CARD_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
 #include "user.h"
 
 enum Status {
     TODO, WORKING, DONE
 };
 
-typedef struct{
+typedef struct cardNode{
     Card *card;
     struct cardNode* next;
 }cardNode;
 
 typedef struct Card {
-    int cardID;	// generate using rand()
-    //		(NOTE: will have to verify availability of generated ID)
+    int cardID;
 
     char* title;
     char* description;
-//    time_t timestamp;	//	Date when card was created
+    time_t timestamp;	//	Date when card was created
     enum Status status;
     char* user;	// Assigned user (store email); Board must contain this user
     char** userLog;	// Store emails of all users who worked on this card
-    int userLogCounter; //hany email van a userLogban
+    int numberOfUserLog; //hany email van a userLogban
 
 } Card;
 
 void cardCreate(char * cardName, char * cardDescription);
-//void cardModifyUser(Card * card, char * user);
 void cardDelete( int CardId);
 void cardAssignUser(int CardId, char * userEmail);
 void cardRemoveUser(int CardId, char *userEmail);

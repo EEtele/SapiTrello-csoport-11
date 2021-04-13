@@ -1,32 +1,18 @@
 #include "../include/card.h"
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 
 void cardCreate(char * cardName, char * cardDescription)
 {
-    /*
-    int cardID;	// generate using rand()
-    //		(NOTE: will have to verify availability of generated ID)
-
-    char* title;
-    char* description;
-//    time_t timestamp;	//	Date when card was created
-    enum Status status;
-    char* user;	// Assigned user (store email); Board must contain this user
-    char** userLog;	// Store emails of all users who worked on t */
-
     Card *card;
     srand(time(0));
-    card->cardID = rand()%1000;
+    card->cardID = rand()%10000;
     card->title=(char *)calloc(strlen(cardName)+1, sizeof(char));
     card->description=(char *)calloc(strlen(cardDescription)+1, sizeof(char));
     strcpy(card->title, cardName);
     strcpy(card->description, cardDescription);
+    card->timestamp = time(0);
     card->status=TODO;
     card->user=NULL;
-    card->userLogCounter=0;
+    card->numberOfUserLog=0;
 
     cardNode* temp=(cardNode*)malloc(sizeof(cardNode));
     (*temp).card=card;
@@ -34,7 +20,6 @@ void cardCreate(char * cardName, char * cardDescription)
 
     if(instance.selectedBoard->baseNode=NULL)
     {
-
         instance.selectedBoard->baseNode=temp;
     }
     else {
@@ -44,7 +29,6 @@ void cardCreate(char * cardName, char * cardDescription)
             currNode = currNode->next;
         }
         currNode->next=temp;
-
     }
 }
 
@@ -93,21 +77,12 @@ void cardRemoveUser(int CardId, char *userEmail){
     while (currNode->next != NULL) {
         if(currNode->card.cardId == CardId){ //akkor lepik be ha megtalaltuk az elemet
             free(currNode->card.user);
+            currNode->card.user = NULL;
             break;
         }
         currNode = currNode->next;
     }
 }
-
-//void cardModifyUser(Card * card, char * user)
-//{
-//    card->userLogCounter++;
-//    void *pointer;
-//    pointer = realloc(card->userLog, card->userLogCounter * sizeof(char *));
-//    card->userLog = pointer;
-//    card->user=(char *)calloc( strlen(user), sizeof(char));
-//    card->user=user;
-//}
 
 void cardGetStatus(int CardId) {
     cardNode *currNode;
@@ -142,7 +117,7 @@ void cardUpdate(int cardID) {
                 if (currNode->card.status == TODO) {
                     currNode->card.status = WORKING;
                 }
-                    else if (currNode->card.status == WORKING) {
+                else if (currNode->card.status == WORKING) {
                     currNode->card.status = DONE;
                     }
                 }
