@@ -31,6 +31,8 @@ typedef struct cardNode{
 }cardNode;
 
 void cardCreate(char * cardName, char * cardDescription);
+void cardModifyName(int cardID, char* cardName);
+void cardModifyDescription(int cardID, char* cardDescription);
 void cardDelete( int CardId);
 void cardAssignUser(int CardId, char * userEmail);
 void cardRemoveUser(int CardId, char *userEmail);
@@ -38,5 +40,7 @@ void cardUpdate(int cardID);
 void cardSetStatus(int CardId, enum Status status);
 void cardGetStatus(int CardId);
 void cardGetUserLog(int CardId);
+Card* cardGet(int i);
+void cardList();
 
 #endif //SAPITRELLO_CSOPORT_11_CARD_H

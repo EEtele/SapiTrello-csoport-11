@@ -3,8 +3,7 @@
 void cardCreate(char * cardName, char * cardDescription)
 {
     Card *card = (Card*)calloc(1, sizeof(struct Card));
-    srand(time(0));
-    card->cardID = rand()%10000;
+    card->cardID = instance.selectedBoard->cardIDCounter;
     card->title=(char *)calloc(strlen(cardName)+1, sizeof(char));
     card->description=(char *)calloc(strlen(cardDescription)+1, sizeof(char));
     strcpy(card->title, cardName);
@@ -21,6 +20,7 @@ void cardCreate(char * cardName, char * cardDescription)
     if(instance.selectedBoard->baseNode==NULL)
     {
         instance.selectedBoard->baseNode=temp;
+        instance.selectedBoard->cardIDCounter++;
     }
     else {
         cardNode *currNode;
@@ -30,6 +30,14 @@ void cardCreate(char * cardName, char * cardDescription)
         }
         currNode->next=temp;
     }
+}
+
+void cardModifyName(int cardID, char* cardName) {
+
+}
+
+void cardModifyDescription(int cardID, char* cardDescription) {
+
 }
 
 void cardDelete(int CardId)
@@ -90,10 +98,15 @@ void cardGetStatus(int CardId) {
     while (currNode->next != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
             switch (currNode->card->status) {
-                case TODO: printf("TODO"); break;
-                case WORKING: printf("WORKING"); break;
-                case DONE:printf("DONE"); break;
+                case TODO: printf("\033[0;31m");
+                    printf("TODO");
+                    break;
+                case WORKING: printf("\033[0;33m");
+                    printf("WORKING"); break;
+                case DONE: printf("\033[0;32m");
+                    printf("DONE"); break;
             }
+            printf("\33[0m");
         }
         currNode = currNode->next;
     }
@@ -142,4 +155,51 @@ void cardGetUserLog(int CardId){
     }
 }
 
+Card* cardGet(int i) {
+    if (i < 0 || i >= instance.selectedBoard->numberOfCards) {
+        return NULL;
+    }
 
+    cardNode* node = instance.selectedBoard->baseNode;
+    int c = 0;
+    while (node != NULL) {
+        if (c == i) {
+            return node->card;
+        }
+
+        c++;
+        node = node->next;
+    }
+
+    return NULL;
+}
+
+void cardList() {
+    for (int i = 0; i < instance.selectedBoard->numberOfCards; i++) {
+        Card* card = cardGet(i);
+        for (int i = 0; i < CARD_BORDER_LENGTH; i++) {
+            printf("-");
+        }
+        printf("\n");
+
+        printf("%4d ", card->cardID);
+        cardGetStatus(card->cardID);
+        printf("%s\n", card->title);
+        printf("%s\n\n", card->description);
+
+        struct tm* tm;	// built-in structure to convert seconds into a datetime structure
+        if ((tm = localtime(&card->timestamp)) == NULL) {
+            printf("ERROR: Cannot convert seconds to datetime\n");
+        }
+
+        // 	Print out datetime structure into an easily readable form
+        printf("[%04d-%02d-%02d %02d:%02d:%02d]\n",
+               tm->tm_year+1900, tm->tm_mon, tm->tm_mday,
+               tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+        for (int i = 0; i < CARD_BORDER_LENGTH; i++) {
+            printf("-");
+        }
+        printf("\n");
+    }
+}
