@@ -13,6 +13,6 @@ typedef struct User {
 
 void userCreate(char* userName, char* userEmail);
 void userDelete(char* userEmail);
-void userPrint();
+void userList();
 
 #endif //SAPITRELLO_CSOPORT_11_USER_H

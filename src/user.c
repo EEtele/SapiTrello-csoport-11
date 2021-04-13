@@ -49,7 +49,7 @@ void userDelete(char* userEmail) {
     printf("Could not find user\n");
 }
 
-void userPrint() {
+void userList() {
     if (instance.numberOfUsers == 0) {
         printf("There are no users\n");
     } else {
