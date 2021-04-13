@@ -15,6 +15,7 @@ typedef struct Board {
     struct cardNode *baseNode;
     int numberOfUsers;
     char** users;
+    int cardIDCounter;
 } Board;
 
 #endif //SAPITRELLO_CSOPORT_11_BOARD_H

@@ -3,6 +3,7 @@
 void boardCreate(char* boardName)
 {
     Board* tempB=(Board*)calloc(1,sizeof(Board));
+    tempB->cardIDCounter = 0;
     strcpy((*tempB).name, boardName);
     if (instance.boards == NULL) {
         instance.boards = (Board*)calloc(1, sizeof(Board));
