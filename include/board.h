@@ -11,8 +11,8 @@
 
 typedef struct Board {
     char name[MAX_BOARD_NAME_LENGTH];
-    struct cardNode *baseNode;
     int numberOfCards;
+    struct cardNode *baseNode;
     int numberOfUsers;
     char** users;
 } Board;
