@@ -12,7 +12,7 @@ lehet.
 #### Usage
 * Always put parameters in "" quotes, example:  
 	` user new "username" "user@example.com"`  
-* Also, please don't use " as quote in description  
+* Also, please don't use `"` other than to separate parameters  
 
 ### User
 * Create new user  
