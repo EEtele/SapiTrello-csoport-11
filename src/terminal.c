@@ -63,21 +63,57 @@ int input(char* buffer) {
             flag = 1;
         }
     } else if (strcmp(buffer, "board") == 0) {
-        if (strcmp(buffer, "new") == 0) {           // board new
+        scanf(" %s", buffer);
+        if (strcmp(buffer, "new") == 0) { // board new
+            scanf(" %[^\n]", buffer);
+            parameterList = extractParameters(buffer, &listSize);
+            if(listSize==1) {
+                boardCreate(parameterList[0]);
+            }
+            else flag=2;
 
         } else if (strcmp(buffer, "modify") == 0) { // board modify
+            scanf(" %[^\n]", buffer);
+            parameterList = extractParameters(buffer, &listSize);
+            if(listSize==1) {
+                boardModify(parameterList[0]);
+            }
+            else flag=2;
 
         } else if (strcmp(buffer, "remove") == 0) { // board remove
+            scanf(" %[^\n]", buffer);
+            parameterList = extractParameters(buffer, &listSize);
+            if(listSize==1) {
+                boardDelete(parameterList[0]);
+            }
+            else flag=2;
 
         } else if (strcmp(buffer, "list") == 0) {   // board list
+                boardList();
 
         } else if (strcmp(buffer, "select") == 0) { // board select
+            scanf(" %[^\n]", buffer);
+            parameterList = extractParameters(buffer, &listSize);
+            if(listSize==1) {
+                boardSelect(parameterList[0]);
+            }
+            else flag=2;
 
         } else if (strcmp(buffer, "user") == 0) {
             if (strcmp(buffer, "add") == 0) {       // board user add
-
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if(listSize==1) {
+                    boardAddUser(parameterList[0]);
+                }
+                else flag=2;
             } else if (strcmp(buffer, "remove") == 0) { // board user remove
-
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if(listSize==1) {
+                    boardRemoveUser(parameterList[0]);
+                }
+                else flag=2;
             } else {
                 flag = 1;
             }
@@ -85,6 +121,7 @@ int input(char* buffer) {
             flag = 1;
         }
     } else if (strcmp(buffer, "card") == 0) {
+        scanf(" %s", buffer);
         if (strcmp(buffer, "new") == 0) {           // card new
             scanf(" %[^\n]", buffer);
             parameterList = extractParameters(buffer, &listSize);

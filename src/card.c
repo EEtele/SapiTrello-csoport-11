@@ -30,6 +30,8 @@ void cardCreate(char * cardName, char * cardDescription)
         }
         currNode->next=temp;
     }
+    instance.selectedBoard->numberOfCards++;
+    printf("Card done\n");
 }
 
 void cardModifyName(int cardID, char* cardName) {
@@ -175,6 +177,12 @@ Card* cardGet(int i) {
 }
 
 void cardList() {
+    if(instance.selectedBoard->numberOfCards==0)
+    {
+        printf("No cards in this board\n");
+        return;
+    }
+
     for (int i = 0; i < instance.selectedBoard->numberOfCards; i++) {
         Card* card = cardGet(i);
         for (int i = 0; i < CARD_BORDER_LENGTH; i++) {

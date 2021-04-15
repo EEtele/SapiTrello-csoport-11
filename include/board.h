@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "defines.h"
 #include "card.h"
@@ -17,5 +18,18 @@ typedef struct Board {
     char** users;
     int cardIDCounter;
 } Board;
+
+
+void boardCreate(char* boardName);
+int boardExists(char* boardName);
+void boardModify(char* newName);
+void boardDelete(char* targetName);
+void boardSelect(char* boardName);
+void sortCardsStatusDate(Board board);
+void boardList();
+int boardContainsUser(char* email);
+void boardAddUser(char* email);
+void boardRemoveUser(char* email);
+
 
 #endif //SAPITRELLO_CSOPORT_11_BOARD_H
