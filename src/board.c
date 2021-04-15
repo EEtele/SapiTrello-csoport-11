@@ -1,22 +1,23 @@
 #include "../include/board.h"
 
-
-
-
-
-
 void boardCreate(char* boardName)
 {
     Board* tempB=(Board*)calloc(1,sizeof(Board));
+    if (tempB == NULL) {
+        printf("Cannot allocate Board\n");
+        return;
+    }
+
     tempB->cardIDCounter = 0;
     strcpy((*tempB).name, boardName);
     if (instance.boards == NULL) {
         instance.boards = (Board*)calloc(1, sizeof(Board));
         instance.boards[0] = *tempB;
         instance.numberOfBoards=1;
-
     } else {
-        if(boardExists(boardName)==-1){return;}
+        if(boardExists(boardName)!=-1){
+            printf("Board already exists\n");
+            return;}
         Board* ptr = instance.boards;
         int n = instance.numberOfBoards;
         Board* newPtr = (Board*)realloc(ptr, (n+1)*sizeof(Board));
@@ -24,6 +25,8 @@ void boardCreate(char* boardName)
         instance.boards[n] = *tempB;
         instance.numberOfBoards++;
     }
+    printf("Board created\n");
+    boardSelect(tempB->name);
 }
 
 int boardExists(char* boardName)
@@ -38,8 +41,6 @@ int boardExists(char* boardName)
     return -1;
 }
 
-
-
 void boardModify(char* newName)
 {
     strcpy(instance.selectedBoard->name,newName);
@@ -52,6 +53,8 @@ void boardSelect(char* boardName)
         if(strcmp(instance.boards[i].name,boardName)==0)
         {
             instance.selectedBoard=&instance.boards[i];
+            printf("Board selected\n");
+            break;
         }
     }
 }
@@ -63,10 +66,15 @@ void boardDelete(char* targetName)
     {
         if(strcmp(instance.boards[i].name,targetName)==0)
         {
-            //instance.boards[i]=NULL;
             break;
         }
     }
+
+    cardNode* currNode = instance.selectedBoard->baseNode;
+    while (currNode != NULL) {
+        cardDelete(currNode->card->cardID);
+    }
+
     for(i;i<instance.numberOfBoards-1;i++)
     {
         instance.boards[i]=instance.boards[i+1];
@@ -76,8 +84,8 @@ void boardDelete(char* targetName)
     Board* newPtr = (Board*)realloc(ptr, instance.numberOfBoards * sizeof(Board));
     instance.boards = newPtr;
 
-
-
+    instance.selectedBoard = NULL;
+    printf("Deleted board\n");
 }
 
 void sortCardsStatusDate(Board board)
@@ -119,12 +127,20 @@ void sortCardsStatusDate(Board board)
 
 void boardList()
 {
-    if(instance.numberOfBoards>100000)return;
+    if(instance.numberOfBoards == 0) {
+        printf("No boards\n");
+        return;
+    }
+
     for(int i=0; i<instance.numberOfBoards;i++)
     {
-        printf("%s\n", instance.boards[i].name);
+        printf("%s", instance.boards[i].name);
+        if (strcmp(instance.selectedBoard->name, instance.boards[i].name) == 0) {
+            printf(" (Selected)\n");
+        } else {
+            printf("\n");
+        }
     }
-    return;
 }
 
 int boardContainsUser(char* email)
