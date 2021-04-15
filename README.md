@@ -40,8 +40,8 @@ lehet.
 * Create new card  
 	` card new "cardName" "cardDescription"`  
 * Modify card  
-	` card modify name "cardID" "cardName"`
-	` card modify description "cardID" "cardDescription"  
+	` card modify name "cardID" "cardName"`  
+	` card modify description "cardID" "cardDescription"`  
 * Remove card  
 	` card remove "cardID"`  
 * List all cards  
