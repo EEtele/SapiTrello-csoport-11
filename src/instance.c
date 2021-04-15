@@ -1,8 +1,5 @@
 #include "../include/instance.h"
 
-//Cannot complete instanceLoad without writing instanceWrite
-//And cannot write instanceWrite without card and Board functions
-
 void initializeDataFiles() {
     FILE* fout = fopen("data/boards.dat", "wt");
     fprintf(fout, "0");
