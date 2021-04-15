@@ -7,6 +7,7 @@
     1 - syntax error
     2 - invalid number of parameters
     3 - invalid parameter
+    4 - nothing selected
 */
 
 
@@ -73,20 +74,26 @@ int input(char* buffer) {
             else flag=2;
 
         } else if (strcmp(buffer, "modify") == 0) { // board modify
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if(listSize==1) {
-                boardModify(parameterList[0]);
+            if (instance.selectedBoard == NULL) {
+                flag = 4;
+            } else {
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 1) {
+                    boardModify(parameterList[0]);
+                } else flag = 2;
             }
-            else flag=2;
 
         } else if (strcmp(buffer, "remove") == 0) { // board remove
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if(listSize==1) {
-                boardDelete(parameterList[0]);
+            if (instance.selectedBoard == NULL) {
+                flag = 4;
+            } else {
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 1) {
+                    boardDelete(parameterList[0]);
+                } else flag = 2;
             }
-            else flag=2;
 
         } else if (strcmp(buffer, "list") == 0) {   // board list
                 boardList();
@@ -94,163 +101,167 @@ int input(char* buffer) {
         } else if (strcmp(buffer, "select") == 0) { // board select
             scanf(" %[^\n]", buffer);
             parameterList = extractParameters(buffer, &listSize);
-            if(listSize==1) {
+            if (listSize == 1) {
                 boardSelect(parameterList[0]);
-            }
-            else flag=2;
-
+            } else flag = 2;
         } else if (strcmp(buffer, "user") == 0) {
-            if (strcmp(buffer, "add") == 0) {       // board user add
-                scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if(listSize==1) {
-                    boardAddUser(parameterList[0]);
-                }
-                else flag=2;
-            } else if (strcmp(buffer, "remove") == 0) { // board user remove
-                scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if(listSize==1) {
-                    boardRemoveUser(parameterList[0]);
-                }
-                else flag=2;
+            if (instance.selectedBoard == NULL) {
+                flag = 4;
             } else {
-                flag = 1;
+                if (strcmp(buffer, "add") == 0) {       // board user add
+                    scanf(" %[^\n]", buffer);
+                    parameterList = extractParameters(buffer, &listSize);
+                    if (listSize == 1) {
+                        boardAddUser(parameterList[0]);
+                    } else flag = 2;
+                } else if (strcmp(buffer, "remove") == 0) { // board user remove
+                    scanf(" %[^\n]", buffer);
+                    parameterList = extractParameters(buffer, &listSize);
+                    if (listSize == 1) {
+                        boardRemoveUser(parameterList[0]);
+                    } else flag = 2;
+                } else {
+                    flag = 1;
+                }
             }
         } else {
             flag = 1;
         }
     } else if (strcmp(buffer, "card") == 0) {
-        scanf(" %s", buffer);
-        if (strcmp(buffer, "new") == 0) {           // card new
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if (listSize == 2) {
-                cardCreate(parameterList[0], parameterList[1]);
-            } else {
-                flag = 2;
-            }
-        } else if (strcmp(buffer, "modify") == 0) {
-            if (strcmp(buffer, "name") == 0) {      // card modify name
-                scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 2) {
-                    // Convert string to number (if it fails, it wont change value of num)
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
-                    cardModifyName(num, parameterList[1]);
-                } else {
-                    flag = 2;
-                }
-            } else if (strcmp(buffer, "description") == 0) {    // card modify description
-                scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 2) {
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
-                    cardModifyDescription(num, parameterList[1]);
-                } else {
-                    flag = 2;
-                }
-            } else {
-                flag = 1;
-            }
-        } else if (strcmp(buffer, "remove") == 0) { // card remove
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if (listSize == 1) {
-                int num = INT_MAX;
-                sscanf(parameterList[0], "%d", &num);
-
-                cardDelete(num);
-            } else {
-                flag = 2;
-            }
-        } else if (strcmp(buffer, "list") == 0) {   // card list
-            cardList();
-        } else if (strcmp(buffer, "user") == 0) {
-            if (strcmp(buffer, "assign") == 0) {    // card user assign
-                scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 2) {
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
-                    cardAssignUser(num, parameterList[1]);
-                } else {
-                    flag = 2;
-                }
-            } else if (strcmp(buffer, "remove") == 0) { // card user remove
-                scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 2) {
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
-                    cardRemoveUser(num, parameterList[1]);
-                } else {
-                    flag = 2;
-                }
-            } else {
-                flag = 1;
-            }
-        } else if (strcmp(buffer, "status") == 0) { // card status
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if (listSize == 1) {
-                int num = INT_MAX;
-                sscanf(parameterList[0], "%d", &num);
-
-                cardGetStatus(num);
-                printf("\n");
-            } else {
-                flag = 2;
-            }
-        } else if (strcmp(buffer, "update") == 0) { // card update
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if (listSize == 1) {
-                int num = INT_MAX;
-                sscanf(parameterList[0], "%d", &num);
-
-                cardUpdate(num);
-            } else if (listSize == 2) {
-                int num = INT_MAX;
-                sscanf(parameterList[0], "%d", &num);
-
-                enum Status stat;
-
-                if (strcmp(parameterList[1], "TODO") == 0) {
-                    stat = TODO;
-                } else if (strcmp(parameterList[1], "WORKING") == 0) {
-                    stat = WORKING;
-                } else if (strcmp(parameterList[1], "DONE") == 0) {
-                    stat = DONE;
-                } else {
-                    flag = 3;
-                }
-
-                if (flag != 3) {
-                    cardSetStatus(num, stat);
-                }
-            } else {
-                flag = 2;
-            }
-        } else if (strcmp(buffer, "log") == 0) {    // card log
-            scanf(" %[^\n]", buffer);
-            parameterList = extractParameters(buffer, &listSize);
-            if (listSize == 1) {
-                int num = INT_MAX;
-                sscanf(parameterList[0], "%d", &num);
-
-                cardGetUserLog(num);
-            } else {
-                flag = 2;
-            }
+        if (instance.selectedBoard == NULL) {
+            flag = 4;
         } else {
-            flag = 1;
+            scanf(" %s", buffer);
+            if (strcmp(buffer, "new") == 0) {           // card new
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 2) {
+                    cardCreate(parameterList[0], parameterList[1]);
+                } else {
+                    flag = 2;
+                }
+            } else if (strcmp(buffer, "modify") == 0) {
+                if (strcmp(buffer, "name") == 0) {      // card modify name
+                    scanf(" %[^\n]", buffer);
+                    parameterList = extractParameters(buffer, &listSize);
+                    if (listSize == 2) {
+                        // Convert string to number (if it fails, it wont change value of num)
+                        int num = INT_MAX;
+                        sscanf(parameterList[0], "%d", &num);
+
+                        cardModifyName(num, parameterList[1]);
+                    } else {
+                        flag = 2;
+                    }
+                } else if (strcmp(buffer, "description") == 0) {    // card modify description
+                    scanf(" %[^\n]", buffer);
+                    parameterList = extractParameters(buffer, &listSize);
+                    if (listSize == 2) {
+                        int num = INT_MAX;
+                        sscanf(parameterList[0], "%d", &num);
+
+                        cardModifyDescription(num, parameterList[1]);
+                    } else {
+                        flag = 2;
+                    }
+                } else {
+                    flag = 1;
+                }
+            } else if (strcmp(buffer, "remove") == 0) { // card remove
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 1) {
+                    int num = INT_MAX;
+                    sscanf(parameterList[0], "%d", &num);
+
+                    cardDelete(num);
+                } else {
+                    flag = 2;
+                }
+            } else if (strcmp(buffer, "list") == 0) {   // card list
+                cardList();
+            } else if (strcmp(buffer, "user") == 0) {
+                if (strcmp(buffer, "assign") == 0) {    // card user assign
+                    scanf(" %[^\n]", buffer);
+                    parameterList = extractParameters(buffer, &listSize);
+                    if (listSize == 2) {
+                        int num = INT_MAX;
+                        sscanf(parameterList[0], "%d", &num);
+
+                        cardAssignUser(num, parameterList[1]);
+                    } else {
+                        flag = 2;
+                    }
+                } else if (strcmp(buffer, "remove") == 0) { // card user remove
+                    scanf(" %[^\n]", buffer);
+                    parameterList = extractParameters(buffer, &listSize);
+                    if (listSize == 2) {
+                        int num = INT_MAX;
+                        sscanf(parameterList[0], "%d", &num);
+
+                        cardRemoveUser(num, parameterList[1]);
+                    } else {
+                        flag = 2;
+                    }
+                } else {
+                    flag = 1;
+                }
+            } else if (strcmp(buffer, "status") == 0) { // card status
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 1) {
+                    int num = INT_MAX;
+                    sscanf(parameterList[0], "%d", &num);
+
+                    cardGetStatus(num);
+                    printf("\n");
+                } else {
+                    flag = 2;
+                }
+            } else if (strcmp(buffer, "update") == 0) { // card update
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 1) {
+                    int num = INT_MAX;
+                    sscanf(parameterList[0], "%d", &num);
+
+                    cardUpdate(num);
+                } else if (listSize == 2) {
+                    int num = INT_MAX;
+                    sscanf(parameterList[0], "%d", &num);
+
+                    enum Status stat;
+
+                    if (strcmp(parameterList[1], "TODO") == 0) {
+                        stat = TODO;
+                    } else if (strcmp(parameterList[1], "WORKING") == 0) {
+                        stat = WORKING;
+                    } else if (strcmp(parameterList[1], "DONE") == 0) {
+                        stat = DONE;
+                    } else {
+                        flag = 3;
+                    }
+
+                    if (flag != 3) {
+                        cardSetStatus(num, stat);
+                    }
+                } else {
+                    flag = 2;
+                }
+            } else if (strcmp(buffer, "log") == 0) {    // card log
+                scanf(" %[^\n]", buffer);
+                parameterList = extractParameters(buffer, &listSize);
+                if (listSize == 1) {
+                    int num = INT_MAX;
+                    sscanf(parameterList[0], "%d", &num);
+
+                    cardGetUserLog(num);
+                } else {
+                    flag = 2;
+                }
+            } else {
+                flag = 1;
+            }
         }
     } else if (strcmp(buffer, "exit") == 0) {       // exit
         flag = -1;
@@ -280,7 +291,12 @@ void terminalLoop() {
             case 1: printf("Syntax error\n"); break;
             case 2: printf("Invalid number of parameters\n"); break;
             case 3: printf("Invalid parameter\n"); break;
+            case 4: printf("Nothing selected\n"); break;
             default: printf("ERROR: Unknown command flag %i\n", commandFlag);
+        }
+
+        if (commandFlag != 0) {
+            scanf(" %[^\n]", buffer);   // If theres an error, clear input
         }
     }
 }
