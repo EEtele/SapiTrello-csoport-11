@@ -15,11 +15,11 @@ enum Status {
 typedef struct Card {
     int cardID;
 
-    char* title;
-    char* description;
+    char title[MAX_CARD_TITLE_LENGTH];
+    char description[MAX_CARD_DESCRIPTION_LENGTH];
     time_t timestamp;	//	Date when card was created
     enum Status status;
-    char* user;	// Assigned user (store email); Board must contain this user
+    char user[MAX_USER_EMAIL_LENGTH];	// Assigned user (store email); Board must contain this user
     char** userLog;	// Store emails of all users who worked on this card
     int numberOfUserLog; //hany email van a userLogban
 

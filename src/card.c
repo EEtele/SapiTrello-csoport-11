@@ -4,13 +4,10 @@ void cardCreate(char * cardName, char * cardDescription)
 {
     Card *card = (Card*)calloc(1, sizeof(struct Card));
     card->cardID = instance.selectedBoard->cardIDCounter;
-    card->title=(char *)calloc(strlen(cardName)+1, sizeof(char));
-    card->description=(char *)calloc(strlen(cardDescription)+1, sizeof(char));
     strcpy(card->title, cardName);
     strcpy(card->description, cardDescription);
     card->timestamp = time(0);
     card->status=TODO;
-    card->user=NULL;
     card->numberOfUserLog=0;
 
     cardNode* temp=(cardNode*)malloc(sizeof(cardNode));
@@ -20,7 +17,6 @@ void cardCreate(char * cardName, char * cardDescription)
     if(instance.selectedBoard->baseNode==NULL)
     {
         instance.selectedBoard->baseNode=temp;
-        instance.selectedBoard->cardIDCounter++;
     }
     else {
         cardNode *currNode;
@@ -30,6 +26,8 @@ void cardCreate(char * cardName, char * cardDescription)
         }
         currNode->next=temp;
     }
+
+    instance.selectedBoard->cardIDCounter++;
     instance.selectedBoard->numberOfCards++;
     printf("Card done\n");
 }
@@ -73,7 +71,6 @@ void cardAssignUser(int CardId, char * userEmail){
     currNode = instance.selectedBoard->baseNode;
     while (currNode->next != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
-            currNode->card->user=(char *)calloc(strlen(userEmail)+1, sizeof (char));
             strcpy(currNode->card->user, userEmail);
             break;
         }
@@ -87,7 +84,7 @@ void cardRemoveUser(int CardId, char *userEmail){
     while (currNode->next != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
             free(currNode->card->user);
-            currNode->card->user = NULL;
+            strcpy(currNode->card->user, "");
             break;
         }
         currNode = currNode->next;
@@ -97,18 +94,17 @@ void cardRemoveUser(int CardId, char *userEmail){
 void cardGetStatus(int CardId) {
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
-    while (currNode->next != NULL) {
+    while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
             switch (currNode->card->status) {
-                case TODO: printf("\033[0;31m");
-                    printf("TODO");
-                    break;
-                case WORKING: printf("\033[0;33m");
+                case TODO:
+                    printf("TODO"); break;
+                case WORKING:
                     printf("WORKING"); break;
-                case DONE: printf("\033[0;32m");
+                case DONE:
                     printf("DONE"); break;
             }
-            printf("\33[0m");
+            return;
         }
         currNode = currNode->next;
     }
@@ -192,7 +188,7 @@ void cardList() {
 
         printf("%4d ", card->cardID);
         cardGetStatus(card->cardID);
-        printf("%s\n", card->title);
+        printf(" %s\n", card->title);
         printf("%s\n\n", card->description);
 
         struct tm* tm;	// built-in structure to convert seconds into a datetime structure
