@@ -107,6 +107,7 @@ int instanceLoad() {
     fclose(fin);
 
     printf(".\n");
+    printf("%d boards loaded. %d users loaded.\n", instance.numberOfBoards, instance.numberOfUsers);
 
     return 1;
 }
@@ -130,9 +131,11 @@ int instanceWrite() {
 
         // create card array to write to file
         Card* temp = (Card*)calloc(currBoard->numberOfCards, sizeof(Card));
+        instance.selectedBoard = currBoard;
         for (int j = 0; j < currBoard->numberOfCards; j++) {
             temp[j] = *cardGet(j);
         }
+        instance.selectedBoard = NULL;
 
         // write cards to file
         for (int j = 0; j < currBoard->numberOfCards; j++) {
