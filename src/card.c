@@ -76,6 +76,7 @@ void cardDelete(int CardId)
     if (currNode->card->cardID == CardId){ //ha az elso a kitorlendo elem
         temp = currNode;
         instance.selectedBoard->baseNode=currNode->next;
+        free(temp->card->userLog);
         free(temp);
         instance.selectedBoard->numberOfCards--;
         printf("Card successfully deleted\n");
@@ -84,6 +85,7 @@ void cardDelete(int CardId)
         while (currNode != NULL) {
             if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
                 temp->next = currNode->next;
+                free(currNode->card->userLog);
                 free(currNode);
                 instance.selectedBoard->numberOfCards--;
                 printf("Card successfully deleted\n");

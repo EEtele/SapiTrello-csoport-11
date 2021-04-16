@@ -7,9 +7,11 @@ The program was wrotten modularly to easily be able to change the interface to C
 
 #### Usage  
 * Please don't use `"` other than for parameters  
+* Example:  
+	` card modify name 13 "name"  
 
 ### Instance (Commands that can be used from anywhere)  
-* Exit terminal in safe mode  
+* Exit terminal in safe mode (auto-save)  
 	` exit`  
 	
 ### User  
@@ -42,26 +44,26 @@ The program was wrotten modularly to easily be able to change the interface to C
 * Create new card  
 	` card new "cardName" "cardDescription"`  
 * Modify card  
-	` card modify name "cardID" "cardName"`  
-	` card modify description "cardID" "cardDescription"`  
+	` card modify name {cardID} "cardName"`  
+	` card modify description {cardID} "cardDescription"`  
 * Remove card  
-	` card remove "cardID"`  
+	` card remove {cardID}`  
 * List all cards  
 	` card list`  
 * Group cards by status, then sort by datetime  
 	` card sort`  
 * Assign user to card  
-	` card user assign "cardID" "userEmail"`  
+	` card user assign {cardID} "userEmail"`  
 * Remove user from card  
-	` card user remove "cardID" "userEmail"`  
+	` card user remove {cardID} "userEmail"`  
 * Print card status  
-	` card status "cardID"`  
+	` card status {cardID}`  
 * Update card status  
-	` card update "cardID"`  
+	` card update {cardID}`  
 * Set card status  
-	` card update "cardID" "status"`  
+	` card update {cardID} "status"`  
 * Print card log  
-	` card log "cardID"`  
+	` card log {cardID}`  
 	
 ## Known bugs
 * Whenever you can type but ">" is not present, just press ENTER.  

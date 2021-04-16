@@ -146,6 +146,15 @@ int instanceWrite() {
                 // write userlog to file
                 fwrite(temp[j].userLog[k], sizeof(char), MAX_USER_EMAIL_LENGTH, fout);
             }
+            free(temp[j].userLog);
+        }
+
+        free(temp);
+        cardNode* node = currBoard->baseNode;
+        while (node != NULL) {
+            cardNode* aux = node;
+            node = node->next;
+            free(aux);
         }
 
         // write board users to file
@@ -153,7 +162,10 @@ int instanceWrite() {
             // write board user to file
             fwrite(currBoard->users[j], sizeof(char), MAX_USER_EMAIL_LENGTH, fout);
         }
+
+        free(currBoard->users);
     }
+    free(instance.boards);
     fclose(fout);
     printf(".");
 
@@ -165,6 +177,7 @@ int instanceWrite() {
     for (int i = 0; i < instance.numberOfUsers; i++) {
         fwrite(instance.users, sizeof(User), instance.numberOfUsers, fout);
     }
+    free(instance.users);
     fclose(fout);
 
     printf(".\n");

@@ -144,26 +144,23 @@ int input(char* buffer) {
                     flag = 2;
                 }
             } else if (strcmp(buffer, "modify") == 0) {
+                int num = INT_MAX;
                 scanf(" %s", buffer);
                 if (strcmp(buffer, "name") == 0) {      // card modify name
+                    scanf("%d", &num);
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
-                    if (listSize == 2) {
-                        int num = INT_MAX;
-                        sscanf(buffer, "%d", &num);
-
-                        cardModifyName(num, parameterList[1]);
+                    if (listSize == 1) {
+                        cardModifyName(num, parameterList[0]);
                     } else {
                         flag = 2;
                     }
                 } else if (strcmp(buffer, "description") == 0) {    // card modify description
+                    scanf("%d", &num);
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
-                    if (listSize == 2) {
-                        int num = INT_MAX;
-                        sscanf(buffer, "%d", &num);
-
-                        cardModifyDescription(num, parameterList[1]);
+                    if (listSize == 1) {
+                        cardModifyDescription(num, parameterList[0]);
                     } else {
                         flag = 2;
                     }
