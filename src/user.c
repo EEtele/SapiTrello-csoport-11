@@ -19,13 +19,12 @@ void userCreate(char* userName, char* userEmail) {
 }
 
 void userDelete(char* userEmail) {
-    /*
+
     for (int i = 0; i < instance.numberOfBoards; i++) {
-        if (boardContainsUser(instance.boards[i].name, userEmail)) {
-            boardRemoveUser(instance.boards[i].name, userEmail);
+        if (boardContainsUser(userEmail)) {
+            boardRemoveUser(userEmail);
         }
     }
-    */
 
     for (int i = 0; i < instance.numberOfUsers; i++) {
         if (strcmp(instance.users[i].email, userEmail) == 0) {
