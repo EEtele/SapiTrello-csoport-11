@@ -62,3 +62,7 @@ The program was wrotten modularly to easily be able to change the interface to C
 	` card update "cardID" "status"`  
 * Print card log  
 	` card log "cardID"`  
+	
+## Known bugs
+* Whenever you can type but ">" is not present, just press ENTER.  
+I think this is caused by flushing; if I were to not flush stdin, random syntax errors would appear because of dangling newlines)
