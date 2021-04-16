@@ -25,10 +25,11 @@ int boardExists(char* boardName);
 void boardModify(char* newName);
 void boardDelete(char* targetName);
 void boardSelect(char* boardName);
-void sortCardsStatusDate(Board board);
+void sortCardsStatusDate();
 void boardList();
 int boardContainsUser(char* email);
 void boardAddUser(char* email);
+void boardListUsers();
 void boardRemoveUser(char* email);
 
 

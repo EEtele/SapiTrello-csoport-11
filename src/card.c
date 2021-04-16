@@ -3,6 +3,11 @@
 void cardCreate(char * cardName, char * cardDescription)
 {
     Card *card = (Card*)calloc(1, sizeof(struct Card));
+    if (card == NULL) {
+        printf("Could not allocate card\n");
+        return;
+    }
+
     card->cardID = instance.selectedBoard->cardIDCounter;
     strcpy(card->title, cardName);
     strcpy(card->description, cardDescription);
@@ -10,7 +15,10 @@ void cardCreate(char * cardName, char * cardDescription)
     card->status=TODO;
     card->numberOfUserLog=0;
 
-    cardNode* temp=(cardNode*)malloc(sizeof(cardNode));
+    cardNode* temp=(cardNode*)calloc(1, sizeof(cardNode));
+    if (temp == NULL) {
+        printf("Could not allocate node\n");
+    }
     (*temp).card=card;
     (*temp).next=NULL;
 
@@ -29,15 +37,34 @@ void cardCreate(char * cardName, char * cardDescription)
 
     instance.selectedBoard->cardIDCounter++;
     instance.selectedBoard->numberOfCards++;
-    printf("Card done\n");
+    printf("Card created with ID %d\n", card->cardID);
 }
 
 void cardModifyName(int cardID, char* cardName) {
+    cardNode *currNode = instance.selectedBoard->baseNode;
+    while (currNode != NULL) {
+        if(currNode->card->cardID == cardID){ //akkor lepik be ha megtalaltuk az elemet
+            strcpy(currNode->card->title, cardName);
+            printf("Card name modified\n");
+            return;
+        }
+        currNode = currNode->next;
+    }
 
+    printf("Could not find card\n");
 }
 
 void cardModifyDescription(int cardID, char* cardDescription) {
-
+    cardNode *currNode = instance.selectedBoard->baseNode;
+    while (currNode != NULL) {
+        if(currNode->card->cardID == cardID){ //akkor lepik be ha megtalaltuk az elemet
+            strcpy(currNode->card->description, cardDescription);
+            printf("Card description modified\n");
+            return;
+        }
+        currNode = currNode->next;
+    }
+    printf("Could not find card\n");
 }
 
 void cardDelete(int CardId)
@@ -48,47 +75,63 @@ void cardDelete(int CardId)
 
     if (currNode->card->cardID == CardId){ //ha az elso a kitorlendo elem
         temp = currNode;
-        instance.selectedBoard->baseNode=currNode;
+        instance.selectedBoard->baseNode=currNode->next;
         free(temp);
-    }
-
-    else {  //a kitorlendo elem a kozepen vagy a vegen van
-        while (currNode->next != NULL) {
-            temp=currNode->next;
-            if(temp->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
-                currNode->next = temp->next;
-                free(temp); break;
+        instance.selectedBoard->numberOfCards--;
+        printf("Card successfully deleted\n");
+        return;
+    } else {  //a kitorlendo elem a kozepen vagy a vegen van
+        while (currNode != NULL) {
+            if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
+                temp->next = currNode->next;
+                free(currNode);
+                instance.selectedBoard->numberOfCards--;
+                printf("Card successfully deleted\n");
+                return;
             }
             else {
+                temp = currNode;    // temp holds previous node
                 currNode = currNode->next;
             }
         }
     }
+    printf("Could not find card\n");
 }
 
 void cardAssignUser(int CardId, char * userEmail){
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
-    while (currNode->next != NULL) {
+    while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
             strcpy(currNode->card->user, userEmail);
-            break;
+            printf("Assigned user %s to card\n", userEmail);
+
+            currNode->card->numberOfUserLog++;
+            currNode->card->userLog = (char**)realloc(currNode->card->userLog,
+                                                      currNode->card->numberOfUserLog*(sizeof(char*)));
+            currNode->card->userLog[currNode->card->numberOfUserLog-1] = (char*)calloc(MAX_USER_EMAIL_LENGTH, sizeof(char));
+            strcpy(currNode->card->userLog[currNode->card->numberOfUserLog-1], userEmail);
+            return;
         }
         currNode = currNode->next;
     }
+
+    printf("Could not find card\n");
 }
 
 void cardRemoveUser(int CardId, char *userEmail){
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
-    while (currNode->next != NULL) {
+    while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
-            free(currNode->card->user);
             strcpy(currNode->card->user, "");
-            break;
+            printf("Removed user from card\n");
+            return;
         }
         currNode = currNode->next;
     }
+
+    printf("Could not find card\n");
 }
 
 void cardGetStatus(int CardId) {
@@ -108,49 +151,67 @@ void cardGetStatus(int CardId) {
         }
         currNode = currNode->next;
     }
+
+    printf("Could not find card\n");
 }
 
 void cardSetStatus(int CardId, enum Status status) {
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
-    while (currNode->next != NULL) {
+    while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
             currNode->card->status = status;
-            break;
+            printf("Card status updated\n");
+            return;
         }
         currNode = currNode->next;
     }
+
+    printf("Could not find card\n");
 }
 
 void cardUpdate(int cardID) {
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
-    while (currNode->next != NULL) {
+    while (currNode != NULL) {
         if(currNode->card->cardID == cardID) { //akkor lepik be ha megtalaltuk az elemet
             if (currNode->card->status != DONE) {
                 if (currNode->card->status == TODO) {
                     currNode->card->status = WORKING;
+                    printf("Updated status to WORKING\n");
+                    return;
                 }
                 else if (currNode->card->status == WORKING) {
                     currNode->card->status = DONE;
-                    }
+                    printf("Updated status to DONE\n");
+                    return;
                 }
             }
-                break;
+            printf("Card is already DONE\n");
+            return;
         }
         currNode = currNode->next;
     }
+    printf("Could not find card\n");
+}
 
 void cardGetUserLog(int CardId){
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
-    while (currNode->next != NULL) {
+    while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
-           //kiiratas;
-            break;
+           if (currNode->card->numberOfUserLog == 0) {
+               printf("Empty user log\n");
+               return;
+           }
+            for (int i = 0; i < currNode->card->numberOfUserLog; i++) {
+               printf("%s\n", currNode->card->userLog[i]);
+           }
+           return;
         }
         currNode = currNode->next;
     }
+    printf("Could not find card\n");
 }
 
 Card* cardGet(int i) {
@@ -188,7 +249,8 @@ void cardList() {
 
         printf("%4d ", card->cardID);
         cardGetStatus(card->cardID);
-        printf(" %s\n", card->title);
+        printf(" %s", card->title);
+        printf(" (%s)\n", card->user);
         printf("%s\n\n", card->description);
 
         struct tm* tm;	// built-in structure to convert seconds into a datetime structure

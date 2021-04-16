@@ -10,7 +10,7 @@
     4 - nothing selected
 */
 
-
+// Only extracts from within " quotes
 char** extractParameters(char* input, int* size) {
     char** paramList;
     int listSize = 0;
@@ -105,6 +105,7 @@ int input(char* buffer) {
                 boardSelect(parameterList[0]);
             } else flag = 2;
         } else if (strcmp(buffer, "user") == 0) {
+            scanf(" %s", buffer);
             if (instance.selectedBoard == NULL) {
                 flag = 4;
             } else {
@@ -114,6 +115,8 @@ int input(char* buffer) {
                     if (listSize == 1) {
                         boardAddUser(parameterList[0]);
                     } else flag = 2;
+                } else if (strcmp(buffer, "list") == 0) {
+                    boardListUsers();
                 } else if (strcmp(buffer, "remove") == 0) { // board user remove
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
@@ -141,6 +144,7 @@ int input(char* buffer) {
                     flag = 2;
                 }
             } else if (strcmp(buffer, "modify") == 0) {
+                scanf(" %s", buffer);
                 if (strcmp(buffer, "name") == 0) {      // card modify name
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
@@ -169,37 +173,38 @@ int input(char* buffer) {
                 }
             } else if (strcmp(buffer, "remove") == 0) { // card remove
                 scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 1) {
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
+                int num = INT_MAX;
+                sscanf(buffer, "%d", &num);
+                if (num != INT_MAX) {
                     cardDelete(num);
                 } else {
-                    flag = 2;
+                    flag = 1;
                 }
             } else if (strcmp(buffer, "list") == 0) {   // card list
                 cardList();
+            } else if (strcmp(buffer, "sort") == 0) {
+                sortCardsStatusDate();
             } else if (strcmp(buffer, "user") == 0) {
+                scanf(" %s", buffer);
                 if (strcmp(buffer, "assign") == 0) {    // card user assign
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
-                    if (listSize == 2) {
+                    if (listSize == 1) {
                         int num = INT_MAX;
-                        sscanf(parameterList[0], "%d", &num);
+                        sscanf(buffer, "%d", &num);
 
-                        cardAssignUser(num, parameterList[1]);
+                        cardAssignUser(num, parameterList[0]);
                     } else {
                         flag = 2;
                     }
                 } else if (strcmp(buffer, "remove") == 0) { // card user remove
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
-                    if (listSize == 2) {
+                    if (listSize == 1) {
                         int num = INT_MAX;
-                        sscanf(parameterList[0], "%d", &num);
+                        sscanf(buffer, "%d", &num);
 
-                        cardRemoveUser(num, parameterList[1]);
+                        cardRemoveUser(num, parameterList[0]);
                     } else {
                         flag = 2;
                     }
@@ -208,11 +213,9 @@ int input(char* buffer) {
                 }
             } else if (strcmp(buffer, "status") == 0) { // card status
                 scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 1) {
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
+                int num = INT_MAX;
+                sscanf(buffer, "%d\n", &num);
+                if (num != INT_MAX) {
                     cardGetStatus(num);
                     printf("\n");
                 } else {
@@ -250,11 +253,9 @@ int input(char* buffer) {
                 }
             } else if (strcmp(buffer, "log") == 0) {    // card log
                 scanf(" %[^\n]", buffer);
-                parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 1) {
-                    int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
-
+                int num = INT_MAX;
+                sscanf(buffer, "%d\n", &num);
+                if (num != INT_MAX) {
                     cardGetUserLog(num);
                 } else {
                     flag = 2;
@@ -295,8 +296,10 @@ void terminalLoop() {
             default: printf("ERROR: Unknown command flag %i\n", commandFlag);
         }
 
-        if (commandFlag != 0) {
-            scanf(" %[^\n]", buffer);   // If theres an error, clear input
+        if (commandFlag > 0) {
+            if (buffer[strlen(buffer)-1] != '\"') {
+                scanf(" %[^\n]\n", buffer);   // If theres an error, clear input
+            }
         }
     }
 }
