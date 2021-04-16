@@ -86,8 +86,12 @@ void boardDelete(char* targetName)
 
     cardNode* currNode = instance.selectedBoard->baseNode;
     while (currNode != NULL) {
-        cardDelete(currNode->card->cardID);
+        cardNode* aux = currNode;
+        currNode = currNode->next;
+        cardDelete(aux->card->cardID);
     }
+
+    free(instance.boards[i].users);
 
     for(i;i<instance.numberOfBoards-1;i++)
     {
