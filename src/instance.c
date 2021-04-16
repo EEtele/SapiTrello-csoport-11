@@ -24,8 +24,6 @@ int instanceLoad() {
     // Loads all boards and users from disk
     // Creates folders if empty
 
-    printf("Loading");
-
     instance.selectedBoard = NULL;
     instance.numberOfBoards = 0;
     instance.boards = NULL;
@@ -33,6 +31,8 @@ int instanceLoad() {
     instance.users = NULL;
 
     initializeDir();
+
+    printf("Loading");
 
     FILE* fin = fopen("data/boards.dat", "rb");
     if (fin == NULL) {
