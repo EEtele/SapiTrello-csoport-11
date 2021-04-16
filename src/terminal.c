@@ -219,24 +219,24 @@ int input(char* buffer) {
                     flag = 2;
                 }
             } else if (strcmp(buffer, "update") == 0) { // card update
-                scanf(" %[^\n]", buffer);
+                int num = INT_MAX;
+                scanf(" %d", &num);
+
+                char c;
+                if ((c = getchar()) != '\n' && c != EOF) {
+                    scanf(" %[^\n]", buffer);
+                }
                 parameterList = extractParameters(buffer, &listSize);
-                if (listSize == 1) {
-                    int num = INT_MAX;
-                    sscanf(buffer, "%d", &num);
-
+                if (listSize == 0) {
                     cardUpdate(num);
-                } else if (listSize == 2) {
-                    int num = INT_MAX;
-                    sscanf(buffer, "%d", &num);
-
+                } else if (listSize == 1) {
                     enum Status stat;
 
-                    if (strcmp(parameterList[1], "TODO") == 0) {
+                    if (strcmp(parameterList[0], "TODO") == 0) {
                         stat = TODO;
-                    } else if (strcmp(parameterList[1], "WORKING") == 0) {
+                    } else if (strcmp(parameterList[0], "WORKING") == 0) {
                         stat = WORKING;
-                    } else if (strcmp(parameterList[1], "DONE") == 0) {
+                    } else if (strcmp(parameterList[0], "DONE") == 0) {
                         stat = DONE;
                     } else {
                         flag = 3;
