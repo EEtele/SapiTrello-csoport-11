@@ -1,18 +1,18 @@
-# SapiTrello-csoport-11
-Remélem ezt később lehet változtatni  
-lehet.
+# SapiTrello-csoport-11  
+Yet another kanban-style, list-making Terminal application wrotten in C.  
+The program was wrotten modularly to easily be able to change the interface to CLI or GUI.  
 
-## Commands
+
+## Commands  
+
+#### Usage  
+* Please don't use `"` other than for parameters  
+
 ### Instance (Commands that can be used from anywhere)  
-* Use keyboard combinations and arrows instead of commands  
-	` ezMode`  
 * Exit terminal in safe mode  
 	` exit`  
 	
-#### Usage
-* Please don't use `"` other than for parameters  
-
-### User
+### User  
 * Create new user  
 	` user new "userName" "userEmail"`  
 * Delete user  
@@ -33,6 +33,8 @@ lehet.
 	` Board select "boardName"`  
 * Add user to Board to selected Board  
 	` Board user add "userEmail"`  
+* List all users in current boardName  
+	` Board user list  
 * Remove user from selected Board  
 	` Board user remove "userEmail"`  
 
@@ -46,6 +48,8 @@ lehet.
 	` card remove "cardID"`  
 * List all cards  
 	` card list`  
+* Group cards by status, then sort by datetime  
+	` card sort`  
 * Assign user to card  
 	` card user assign "cardID" "userEmail"`  
 * Remove user from card  
