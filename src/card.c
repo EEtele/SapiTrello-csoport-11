@@ -134,8 +134,10 @@ void cardRemoveUser(int CardId, char *userEmail){
     currNode = instance.selectedBoard->baseNode;
     while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
-            strcpy(currNode->card->user, "");
-            printf("Removed user from card\n");
+            if (strcmp(currNode->card->user, "") != 0) {
+                strcpy(currNode->card->user, "");
+                printf("Removed user from card\n");
+            }
             return;
         }
         currNode = currNode->next;

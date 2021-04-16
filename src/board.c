@@ -225,6 +225,13 @@ void boardRemoveUser(char* email)
         printf("\nBoard doesn't contain user\n");
         return;
     }
+
+    cardNode* currNode = instance.selectedBoard->baseNode;
+    while (currNode != NULL) {
+        cardRemoveUser(currNode->card->cardID, email);
+        currNode = currNode->next;
+    }
+
     int i;
     for(i=0; i<instance.selectedBoard->numberOfUsers;i++) {
         if(strcmp(instance.selectedBoard->users[i], email)==0)
