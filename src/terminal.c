@@ -12,11 +12,11 @@
 
 // Only extracts from within " quotes
 char** extractParameters(char* input, int* size) {
-    char** paramList;
+    char** paramList = NULL;
     int listSize = 0;
 
-    char paramBuffer[PARAM_BUFFER_SIZE];
-    int currPos = 0, bytes;
+    char paramBuffer[PARAM_BUFFER_SIZE] = "";
+    int currPos = 0, bytes = 0;
     while(currPos < strlen(input)) {
         sscanf(input + currPos, " \"%[^\"]%n", paramBuffer, &bytes);
         if (strcmp(paramBuffer, "") != 0) {
@@ -149,9 +149,8 @@ int input(char* buffer) {
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
                     if (listSize == 2) {
-                        // Convert string to number (if it fails, it wont change value of num)
                         int num = INT_MAX;
-                        sscanf(parameterList[0], "%d", &num);
+                        sscanf(buffer, "%d", &num);
 
                         cardModifyName(num, parameterList[1]);
                     } else {
@@ -162,7 +161,7 @@ int input(char* buffer) {
                     parameterList = extractParameters(buffer, &listSize);
                     if (listSize == 2) {
                         int num = INT_MAX;
-                        sscanf(parameterList[0], "%d", &num);
+                        sscanf(buffer, "%d", &num);
 
                         cardModifyDescription(num, parameterList[1]);
                     } else {
@@ -187,23 +186,21 @@ int input(char* buffer) {
             } else if (strcmp(buffer, "user") == 0) {
                 scanf(" %s", buffer);
                 if (strcmp(buffer, "assign") == 0) {    // card user assign
+                    int num = INT_MAX;
+                    scanf(" %d", &num);
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
                     if (listSize == 1) {
-                        int num = INT_MAX;
-                        sscanf(buffer, "%d", &num);
-
                         cardAssignUser(num, parameterList[0]);
                     } else {
                         flag = 2;
                     }
                 } else if (strcmp(buffer, "remove") == 0) { // card user remove
+                    int num = INT_MAX;
+                    scanf(" %d", &num);
                     scanf(" %[^\n]", buffer);
                     parameterList = extractParameters(buffer, &listSize);
                     if (listSize == 1) {
-                        int num = INT_MAX;
-                        sscanf(buffer, "%d", &num);
-
                         cardRemoveUser(num, parameterList[0]);
                     } else {
                         flag = 2;
@@ -226,12 +223,12 @@ int input(char* buffer) {
                 parameterList = extractParameters(buffer, &listSize);
                 if (listSize == 1) {
                     int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
+                    sscanf(buffer, "%d", &num);
 
                     cardUpdate(num);
                 } else if (listSize == 2) {
                     int num = INT_MAX;
-                    sscanf(parameterList[0], "%d", &num);
+                    sscanf(buffer, "%d", &num);
 
                     enum Status stat;
 
@@ -275,6 +272,9 @@ int input(char* buffer) {
 void terminalLoop() {
     char* buffer = (char*)calloc(INPUT_BUFFER_SIZE, sizeof(char)); // buffer for input
 
+    //system("CLS");
+
+    printf("Welcome to SapiTrello!\nFor help checkout the README.md file\n\n");
     while (1) {
         printf(">");
         scanf(" %s", buffer);
@@ -296,10 +296,8 @@ void terminalLoop() {
             default: printf("ERROR: Unknown command flag %i\n", commandFlag);
         }
 
-        if (commandFlag > 0) {
-            if (buffer[strlen(buffer)-1] != '\"') {
-                scanf(" %[^\n]\n", buffer);   // If theres an error, clear input
-            }
-        }
+        fflush(stdin);
+        char c;
+        while ((c = getchar()) != '\n' && c != EOF) {}  // flush 2.0
     }
 }

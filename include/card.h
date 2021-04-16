@@ -20,8 +20,8 @@ typedef struct Card {
     time_t timestamp;	//	Date when card was created
     enum Status status;
     char user[MAX_USER_EMAIL_LENGTH];	// Assigned user (store email); Board must contain this user
-    char** userLog;	// Store emails of all users who worked on this card
     int numberOfUserLog; //hany email van a userLogban
+    char** userLog;	// Store emails of all users who worked on this card
 
 } Card;
 

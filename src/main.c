@@ -2,17 +2,10 @@
 #include "../include/terminal.h"
 
 int main() {
-    //instanceLoad();
+    instanceLoad();
 
-    instance.selectedBoard = NULL;
-    instance.numberOfBoards = 0;
-    instance.boards = NULL;
-    instance.numberOfUsers = 0;
-    instance.users = NULL;
-
-    // Terminal loop
     terminalLoop();
 
-    //instanceWrite();
+    instanceWrite();
     return 0;
 }

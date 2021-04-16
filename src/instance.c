@@ -1,65 +1,112 @@
 #include "../include/instance.h"
 
 void initializeDataFiles() {
-    FILE* fout = fopen("data/boards.dat", "wt");
+    FILE* fout = fopen("data/boards.dat", "wb");
     fprintf(fout, "0");
     fclose(fout);
 
-    fout = fopen("data/users.dat", "wt");
+    fout = fopen("data/users.dat", "wb");
     fprintf(fout, "0");
     fclose(fout);
 
 }
-int initializeDir() {
+void initializeDir() {
     struct stat st = {0};
 
     if (stat("data", &st) == -1) {
         mkdir("data");
+        printf("Created data directory\n");
 
         initializeDataFiles();
-
-        return 1;
-    } else {
-        printf("dir already exists\n");
-
-        initializeDataFiles();
-
-        return 0;
     }
 }
 int instanceLoad() {
     // Loads all boards and users from disk
     // Creates folders if empty
 
+    printf("Loading");
+
     instance.selectedBoard = NULL;
+    instance.numberOfBoards = 0;
+    instance.boards = NULL;
+    instance.numberOfUsers = 0;
+    instance.users = NULL;
 
     initializeDir();
 
-    FILE* fin = fopen("data/boards.dat", "rt");
-    fscanf(fin, "%i", &instance.numberOfBoards);
+    FILE* fin = fopen("data/boards.dat", "rb");
+    if (fin == NULL) {
+        printf("Could not open boards file");
+    }
+    fscanf(fin, "%d\n", &instance.numberOfBoards);
     instance.boards = (Board*)calloc(instance.numberOfBoards, sizeof(Board));
+    printf(".");
+    // read boards from file
     for (int i = 0; i < instance.numberOfBoards; i++) {
-        Board* board = (Board*)calloc(1, sizeof(Board));
+        Board* currBoard = &instance.boards[i];
+        // read board from file
+        fread(currBoard, sizeof(Board), 1, fin);
+        currBoard->baseNode = NULL;
 
-        fscanf(fin, "%[^\n]\n", board->name);
+        // create card array to convert to linked list
+        Card* temp = (Card*)calloc(currBoard->numberOfCards, sizeof(Card));
 
-        char path[MAX_BOARD_NAME_LENGTH+15] = "data/";
-        strcat(path, board->name);
+        // read cards from file
+        for (int j = 0; j < currBoard->numberOfCards; j++) {
+            // read card from file
+            fread(&temp[j], sizeof(Card), 1, fin);
+            // read userlogs from file
+            temp[j].userLog = (char**)calloc(temp[j].numberOfUserLog, sizeof(char*));
+            for (int k = 0; k < temp[j].numberOfUserLog; k++) {
+                temp[j].userLog[k] = (char*)calloc(MAX_USER_EMAIL_LENGTH, sizeof(char));
+                // read userlog from file
+                fread(temp[j].userLog[k], sizeof(char), MAX_USER_EMAIL_LENGTH, fin);
+            }
+        }
 
-        FILE* boardFin = fopen(path, "rt");
-        fread(&instance.boards[i], sizeof(instance.boards[i]), 1, boardFin);
-        fclose(boardFin);
+        instance.selectedBoard = currBoard;
+        cardNode *currNode = NULL;
+        for (int j = 0; j < currBoard->numberOfCards; j++) {
+            cardNode* node = (cardNode *) calloc(1, sizeof(cardNode));
+            if (node == NULL) {
+                printf("Could not allocate node\n");
+            }
+            node->card = &temp[j];
+            node->next = NULL;
+
+            if (currNode == NULL) {
+                currNode = node;
+                currBoard->baseNode = node;
+            } else {
+                currNode->next = node;
+                currNode = currNode->next;
+            }
+        }
+        instance.selectedBoard = NULL;
+
+        // read board users from file
+        currBoard->users = (char**)calloc(currBoard->numberOfUsers, sizeof(char*));
+        for (int j = 0; j < currBoard->numberOfUsers; j++) {
+            currBoard->users[j] = (char*)calloc(MAX_USER_EMAIL_LENGTH, sizeof(char));
+            // read board user from file
+            fread(currBoard->users[j], sizeof(char), MAX_USER_EMAIL_LENGTH, fin);
+        }
     }
     fclose(fin);
+    printf(".");
 
-    fin = fopen("data/users.dat", "rt");
-    fscanf(fin, "%i", &instance.numberOfUsers);
+    fin = fopen("data/users.dat", "rb");
+    if (fin == NULL) {
+        printf("Could not open users file");
+    }
+    fscanf(fin, "%d\n", &instance.numberOfUsers);
     instance.users = (User*)calloc(instance.numberOfUsers, sizeof(User));
     for (int i = 0; i < instance.numberOfUsers; i++) {
-        fscanf(fin, "%[^\n]\n", instance.users[i].name);
-        fscanf(fin, "%[^\n]\n", instance.users[i].email);
+        fread(instance.users, sizeof(User), instance.numberOfUsers, fin);
     }
     fclose(fin);
+
+    printf(".\n");
 
     return 1;
 }
@@ -67,38 +114,57 @@ int instanceLoad() {
 int instanceWrite() {
     // Writes all boards and users to disk
 
-    FILE* fout = fopen("data/boards.dat", "wt");
+    printf("Writing to file");
 
-    struct stat st = {0};
-    //for some reason this doesnt print anything to the file
-    fprintf(fout, "%i\n", instance.numberOfBoards);
-    for (int i = 0; instance.numberOfBoards; i++) {
-        fprintf(fout, "%s\n", instance.boards[i].name);
+    FILE* fout = fopen("data/boards.dat", "wb");
+    if (fout == NULL) {
+        printf("Could not open boards file");
+    }
+    fprintf(fout, "%d\n", instance.numberOfBoards);
+    printf(".");
+    // write boards to file
+    for (int i = 0; i < instance.numberOfBoards; i++) {
+        Board* currBoard = &instance.boards[i];
+        // write board to file
+        fwrite(currBoard, sizeof(Board), 1, fout);
 
-        char dirPath[MAX_BOARD_NAME_LENGTH+15] = "data/";
-        strcat(dirPath, instance.boards[i].name);
-        if (stat(dirPath, &st) == -1) {
-            mkdir(dirPath);
+        // create card array to write to file
+        Card* temp = (Card*)calloc(currBoard->numberOfCards, sizeof(Card));
+        for (int j = 0; j < currBoard->numberOfCards; j++) {
+            temp[j] = *cardGet(j);
         }
 
-        char filePath[MAX_BOARD_NAME_LENGTH+15] = "../";
-        strcat(filePath, dirPath);
-        strcat(filePath, "/Board.dat");
+        // write cards to file
+        for (int j = 0; j < currBoard->numberOfCards; j++) {
+            // write card to file
+            fwrite(&temp[j], sizeof(Card), 1, fout);
+            // write userlogs to file
+            for (int k = 0; k < temp[j].numberOfUserLog; k++) {
+                // write userlog to file
+                fwrite(temp[j].userLog[k], sizeof(char), MAX_USER_EMAIL_LENGTH, fout);
+            }
+        }
 
-        FILE* boardFout = fopen(filePath, "wt");
-        //filePath looks fine, but fopen cannot open it :L
-        fwrite(&instance.boards[i], sizeof(instance.boards[i]), 1, boardFout);
-        fclose(boardFout);
+        // write board users to file
+        for (int j = 0; j < currBoard->numberOfUsers; j++) {
+            // write board user to file
+            fwrite(currBoard->users[j], sizeof(char), MAX_USER_EMAIL_LENGTH, fout);
+        }
     }
     fclose(fout);
+    printf(".");
 
-    fout = fopen("data/users.dat", "wt");
-    fprintf(fout, "%i\n", instance.numberOfUsers);
+    fout = fopen("data/users.dat", "wb");
+    if (fout == NULL) {
+        printf("Could not open users file");
+    }
+    fprintf(fout, "%d\n", instance.numberOfUsers);
     for (int i = 0; i < instance.numberOfUsers; i++) {
-        fprintf(fout, "%s\n", instance.users[i].name);
-        fprintf(fout, "%s\n", instance.users[i].email);
+        fwrite(instance.users, sizeof(User), instance.numberOfUsers, fout);
     }
     fclose(fout);
+
+    printf(".\n");
 
     return 1;
 }

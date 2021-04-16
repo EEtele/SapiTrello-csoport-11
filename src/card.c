@@ -101,14 +101,22 @@ void cardDelete(int CardId)
 void cardAssignUser(int CardId, char * userEmail){
     cardNode *currNode;
     currNode = instance.selectedBoard->baseNode;
+    if (!boardContainsUser(userEmail)) {
+        printf("Board doesnt contain this user\n");
+        return;
+    }
     while (currNode != NULL) {
         if(currNode->card->cardID == CardId){ //akkor lepik be ha megtalaltuk az elemet
             strcpy(currNode->card->user, userEmail);
             printf("Assigned user %s to card\n", userEmail);
 
             currNode->card->numberOfUserLog++;
-            currNode->card->userLog = (char**)realloc(currNode->card->userLog,
-                                                      currNode->card->numberOfUserLog*(sizeof(char*)));
+            if (currNode->card->numberOfUserLog == 0) {
+                currNode->card->userLog = (char**)calloc(1, sizeof(char*));
+            } else {
+                currNode->card->userLog = (char **) realloc(currNode->card->userLog,
+                                                            currNode->card->numberOfUserLog * (sizeof(char *)));
+            }
             currNode->card->userLog[currNode->card->numberOfUserLog-1] = (char*)calloc(MAX_USER_EMAIL_LENGTH, sizeof(char));
             strcpy(currNode->card->userLog[currNode->card->numberOfUserLog-1], userEmail);
             return;

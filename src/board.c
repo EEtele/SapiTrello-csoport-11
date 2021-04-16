@@ -161,11 +161,12 @@ void boardList()
     for(int i=0; i<instance.numberOfBoards;i++)
     {
         printf("%s", instance.boards[i].name);
-        if (strcmp(instance.selectedBoard->name, instance.boards[i].name) == 0) {
-            printf(" (Selected)\n");
-        } else {
-            printf("\n");
+        if (instance.selectedBoard != NULL) {
+            if (strcmp(instance.selectedBoard->name, instance.boards[i].name) == 0) {
+                printf(" (Selected)");
+            }
         }
+        printf("\n");
     }
 }
 
@@ -242,6 +243,3 @@ void boardRemoveUser(char* email)
 
     printf("Removed user from board\n");
 }
-
-
-
