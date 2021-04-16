@@ -114,37 +114,35 @@ void sortCardsStatusDate()
     printf("Sorting cards in selected board");
     Board* board = instance.selectedBoard;
     Card *auxC;
-    for(int i=0;i<board->numberOfCards-1;i++) {
-        if (board->baseNode->card->status==DONE)
-        {
-            auxC=board->baseNode->card;
-            board->baseNode->card=board->baseNode->next->card;
-            board->baseNode->next->card=auxC;
+    while(1) {
+        int cserelodott=0;
+        cardNode* currNode = board->baseNode;
+        while (currNode->next != NULL) {
+            if (currNode->card->status > currNode->next->card->status) {
+                auxC = currNode->card;
+                currNode->card = currNode->next->card;
+                currNode->next->card = auxC;
+                cserelodott = 1;
+            }
+            currNode = currNode->next;
         }
-    }
-    printf(".");
-
-    for(int i=0;i<board->numberOfCards-1;i++) {
-        if (board->baseNode->card->status==WORKING && board->baseNode->next->card->status!=DONE)
-        {
-            auxC=board->baseNode->card;
-            board->baseNode->card=board->baseNode->next->card;
-            board->baseNode->next->card=auxC;
-        }
+        if(!cserelodott)break;
     }
     printf(".");
 
     while(1) {
         int cserelodott=0;
-        for (int i = 0; i < board->numberOfCards - 1; i++) {
-            if (board->baseNode->card->status == board->baseNode->next->card->status) {
-                if (board->baseNode->card->timestamp < board->baseNode->next->card->timestamp) {
-                    auxC = board->baseNode->card;
-                    board->baseNode->card = board->baseNode->next->card;
-                    board->baseNode->next->card = auxC;
-                    cserelodott=1;
+        cardNode* currNode = board->baseNode;
+        while (currNode->next != NULL) {
+            if (currNode->card->status == currNode->next->card->status) {
+                if (currNode->card->timestamp > currNode->next->card->timestamp) {
+                    auxC = currNode->card;
+                    currNode->card = currNode->next->card;
+                    currNode->next->card = auxC;
+                    cserelodott = 1;
                 }
             }
+            currNode = currNode->next;
         }
         if(!cserelodott)break;
     }
