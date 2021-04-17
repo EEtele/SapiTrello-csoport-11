@@ -8,7 +8,7 @@ The program was wrotten modularly to easily be able to change the interface to C
 #### Usage  
 * Please don't use `"` other than for parameters  
 * Example:  
-	` card modify name 13 "name"  
+	` card modify name 13 "name"`  
 
 ### Instance (Commands that can be used from anywhere)  
 * Exit terminal in safe mode (auto-save)  
