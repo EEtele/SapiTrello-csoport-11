@@ -1,6 +1,6 @@
 # SapiTrello-csoport-11  
-Yet another kanban-style, list-making Terminal application wrotten in C.  
-The program was wrotten modularly to easily be able to change the interface to CLI or GUI.  
+Yet another kanban-style, list-making Terminal application wroten in C.  
+The program was wroten modularly to easily be able to change the interface to CLI or GUI.  
 
 
 ## Commands  
@@ -25,7 +25,7 @@ The program was wrotten modularly to easily be able to change the interface to C
 ### Board  
 * Create new Board  
 	` Board new "boardName"`  
-* Modify Board  
+* Modify currently selected Board's name  
 	` Board modify "boardName"`  
 * Remove Board  
 	` Board remove "boardName"`  
@@ -36,7 +36,7 @@ The program was wrotten modularly to easily be able to change the interface to C
 * Add user to Board to selected Board  
 	` Board user add "userEmail"`  
 * List all users in current boardName  
-	` Board user list  
+	` Board user list`  
 * Remove user from selected Board  
 	` Board user remove "userEmail"`  
 
@@ -60,7 +60,7 @@ The program was wrotten modularly to easily be able to change the interface to C
 	` card status {cardID}`  
 * Update card status  
 	` card update {cardID}`  
-* Set card status  
+* Set card status (UpperCase)  
 	` card update {cardID} "status"`  
 * Print card log  
 	` card log {cardID}`  
